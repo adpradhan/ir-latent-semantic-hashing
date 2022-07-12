@@ -1,0 +1,30 @@
+Module:
+LSH
+
+getShingleMatrix:
+	This function extracts all the shingles present in the DNA sequences and constructs a dictionary with shingles as keys and all the documents numbers that respective shingle present in as the values. (we have chosen dictionary and posting list technique instead of a Boolean matrix to reduce the computational complexity.
+
+getSignature:
+	This function finds out the signature/hash value for the given permutation using the shingle dictionary. The signature returned by this function is ultimately used in the signature matrix construction.
+
+getSignatureMatrix:
+	This function generates the required number of permutations (which are hash functions for Jaccard Similarity) and gets the signature from ‘getSignature’ function and constructs the shingle matrix of size no_of_hashes x no_of_documents.
+
+storeSignatures:
+	As the computation of the signature matrix is the bottleneck of the algorithm, we are storing the generated matrix. In this function, using pickle library of python, we are storing the signature matrix.
+
+getAdjMatrix:
+	The signature matrix that has been generated is split into some bands based on the threshold value of similarity the user inputs. For each band, signatures are hashed using the python’s in-built hash function and the buckets are created as python dictionary with hash-value as key and the list of documents hashed to it as values. 
+	All the dictionaries are stored in a list called “final-bucket”. The documents that are present in the buckets value list are candidate pairs.
+
+jaccard:
+	This function is used to find out the jaccard similarity between the two documents that are inputted. It used the shingle dictionary to do the same.
+
+getSimilarDNA:
+	This function takes a query and uses the adj – dictionary and finds out all the candidate pairs of the query document and finds the jaccard similarity of each pair and the ones with similarity above the threshold are returned.
+
+util:
+	This fuction depending on the value of train parameter either loads all pre-built models or builds all the models by calling methods mentioned above.
+
+getQueryResult:
+	This function takes query, data, threshold as inputs and returns similar documents with similarity values as output. It is like a driver fuction that calls other fuctions.
